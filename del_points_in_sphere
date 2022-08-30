@@ -1,0 +1,49 @@
+import utils
+import math as m
+
+filename = "output.xyz"
+
+def del_points_sphere(x,y,z,r, filename_filled):
+    with open("output.xyz", "r+") as rf:
+            
+        points = rf.readlines()
+        points_list = []
+        for coords in points:
+            coord = coords.split(" ") 
+            points_list.append(coord)
+
+        index = len(points_list) - 1
+        while index >= 0:
+            del points_list[index][3]
+            index -= 1
+
+        index = len(points_list) - 1
+        while index >= 0:
+            length_line = m.sqrt((float(points_list[index][0]) - x)**2 + (float(points_list[index][1]) - y)**2 + (float(points_list[index][2]) - z)**2)
+            if length_line != r:
+                del points_list[index]
+            index -= 1
+    return points_list 
+
+points = del_points_sphere(0,0,0,6,"output.xyz")
+utils.write_file("output.xyz", points, True)
+
+    
+    
+
+
+
+        
+#         rf.seek(0)
+        
+#         rf.truncate()
+
+#         for point in points:
+#             length_line = m.sqrt((int(point[0]) - x)**2 + (int(point[1]) - y)**2 + (int(point[2]) - z)**2)
+#             if length_line == r: 
+#                 rf.write(point)
+#             else:
+#                 rf.write("")
+    
+# del_points_sphere(0,0,0,6,"output.xyz")
+

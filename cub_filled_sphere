@@ -1,0 +1,27 @@
+import utils 
+import math
+
+def cubified_filled_sphere(x,y,z,r,n):
+    cube_points = utils.generate_cube(0,0,0,2*r,2*r,2*r,n, True)
+    cube_sphere = []
+    for point in cube_points:
+        length_line = math.sqrt(point[0]**2 + point[1]**2 + point[2]**2)
+        if length_line > r:
+            new_point = []
+            new_point.append(point[0]/length_line * r + x)
+            new_point.append(point[1]/length_line * r + y)
+            new_point.append(point[2]/length_line * r + z)
+            cube_sphere.append(new_point)    
+        else:
+            new_point1 = []
+            new_point1.append(point[0] + x)
+            new_point1.append(point[1] + y)
+            new_point1.append(point[2] + z)
+            cube_sphere.append(new_point1)
+    return cube_sphere
+
+list = cubified_filled_sphere(1,2,3,5,10000)
+print(str(len(list)))
+utils.write_file("test", list, True)
+
+    
