@@ -66,7 +66,7 @@ def generate_sphere(x,y,z, r, n, fill, mode): # x,y,z coords r is radius and n i
     return point_list
 
 def del_points_sphere(x,y,z,r, filename_filled): #hollows out filled sphere 
-    with open("output.xyz", "r+") as rf:
+    with open(filename_filled, "r+") as rf:
             
         points = rf.readlines()
         points_list = []
@@ -82,10 +82,11 @@ def del_points_sphere(x,y,z,r, filename_filled): #hollows out filled sphere
         index = len(points_list) - 1
         while index >= 0:
             length_line = m.sqrt((float(points_list[index][0]) - x)**2 + (float(points_list[index][1]) - y)**2 + (float(points_list[index][2]) - z)**2)
-            if length_line != r:
+            if length_line <= r:
                 del points_list[index]
             index -= 1
-    return points_list     
+    return points_list
+
 
 def main():
     parser = argparse.ArgumentParser(description="Provides points of surface of a sphere with specified parameters")
@@ -97,9 +98,14 @@ def main():
     parser.add_argument('--fill', action='store_true', help="Generates a solid sphere")
     parser.add_argument('--mode', type=str, help="Creates sphere in cube or normal mode, enter 'cube' or 'sphere'")
     parser.add_argument('--overwrite', action='store_true', help="Overwrite exisitng folder")
+    parser.add_argument('--erase', action='store_true', help="Hollows out shape if filled")
     args = parser.parse_args()
-    points = generate_sphere(args.cx, args.cy, args.cz, args.radius, args.n, args.fill, args.mode) 
-    utils.write_file("output.xyz", points, args.overwrite)
+    if args.erase:
+        points = del_points_sphere(args.cx, args.cy, args.cz, args.radius, "output.xyz")
+        utils.write_file('output.xyz', points, True)
+    else:
+        points = generate_sphere(args.cx, args.cy, args.cz, args.radius, args.n, args.fill, args.mode) 
+        utils.write_file("output.xyz", points, args.overwrite)
 
 if __name__ == '__main__':
     main()

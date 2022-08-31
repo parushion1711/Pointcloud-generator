@@ -73,4 +73,3 @@ def generate_cube(x,y,z,w,l,h,n,fill): # (x,y,z) is centre of rectangular prism,
             zcoord += h
 
     return point_list
-    
